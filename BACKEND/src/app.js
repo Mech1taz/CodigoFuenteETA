@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const swaggerUi = require("swagger-ui-express");
+const helmet = require("helmet");
 
 const { pool } = require("./db");
 
@@ -20,6 +21,7 @@ const metricasRoutes = require("./routes/metricas");
 
 const app = express();
 
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
@@ -51,9 +53,6 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Atlas API escuchando en puerto ${PORT}`);
-});
 
 // Solo encendemos el servidor si este archivo se ejecuta directamente
 // (node src/app.js). Cuando lo usan las pruebas, no se enciende.
