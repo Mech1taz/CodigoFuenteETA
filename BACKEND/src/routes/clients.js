@@ -301,13 +301,13 @@ router.delete("/:id", async (req, res) => {
   try {
     const authUser = getUserFromAuthHeader(req);
 
-    if (!authUser || !authUser.empresaId) {
-      return res.status(401).json({
-        error: "No autorizado",
-        glosa: "Token inválido o sin empresa asociada",
+    // RB-4 / RB-5: solo un administrador puede eliminar clientes
+    if (authUser.rolNombre !== "administrador") {
+      return res.status(403).json({
+        error: "Acción no permitida",
+        glosa: "Solo un administrador puede eliminar clientes",
       });
     }
-
     const result = await pool.query(
       "DELETE FROM clientes WHERE id=$1 AND empresa_id = $2 RETURNING *",
       [req.params.id, authUser.empresaId]
