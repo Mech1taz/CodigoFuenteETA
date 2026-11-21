@@ -301,7 +301,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const authUser = getUserFromAuthHeader(req);
 
-    // RB-4 / RB-5: solo un administrador puede eliminar clientes
+    // RB-4 / RB-5: solo un administrador puede eliminar clientess
     if (authUser.rolNombre !== "administrador") {
       return res.status(403).json({
         error: "Acción no permitida",
